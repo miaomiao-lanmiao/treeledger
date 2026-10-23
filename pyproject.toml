@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "treeledger"
+version = "0.1.0"
+description = "Deterministic folder snapshots and readable content diffs, entirely offline."
+readme = "README.en.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "miaomiao-lanmiao"}]
+keywords = ["checksum", "snapshot", "backup", "diff", "cli"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: System :: Archiving :: Backup",
+]
+
+[project.scripts]
+treeledger = "treeledger.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/miaomiao-lanmiao/treeledger"
+Issues = "https://github.com/miaomiao-lanmiao/treeledger/issues"
+
+[tool.setuptools]
+packages = ["treeledger"]

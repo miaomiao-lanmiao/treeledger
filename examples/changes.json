@@ -1,0 +1,55 @@
+{
+  "format": "treeledger.diff",
+  "version": 1,
+  "changed": true,
+  "rules_changed": false,
+  "summary": {
+    "added": 1,
+    "removed": 1,
+    "modified": 1,
+    "moved": 1,
+    "unchanged": 1
+  },
+  "added": [
+    {
+      "path": "todo.txt",
+      "size": 29,
+      "sha256": "1dd792eab1d1b889b4dea9d16203bb5f74416074ac4d5e0fb578f26ce8d10f50"
+    }
+  ],
+  "removed": [
+    {
+      "path": "old-note.txt",
+      "size": 26,
+      "sha256": "81503f930e0d9ce94769ded42a7d5e49ddbc11b744ac77b2f1ad55cb6aba26b0"
+    }
+  ],
+  "modified": [
+    {
+      "before": {
+        "path": "config.json",
+        "size": 20,
+        "sha256": "90c8ac6ba993edae80064535af61f0ffb797fc5cc1cfab388d21d6d40d344164"
+      },
+      "after": {
+        "path": "config.json",
+        "size": 20,
+        "sha256": "4b4aa34bab6cab227f457f055887be1090fd47cc0072e9526bdec73f551113fd"
+      }
+    }
+  ],
+  "moved": [
+    {
+      "before": {
+        "path": "docs/intro.txt",
+        "size": 35,
+        "sha256": "458881e6b896374ec4b1ed4d50dfcda8df0acf5842f9493e16fe9086054d3452"
+      },
+      "after": {
+        "path": "docs/guide.txt",
+        "size": 35,
+        "sha256": "458881e6b896374ec4b1ed4d50dfcda8df0acf5842f9493e16fe9086054d3452"
+      }
+    }
+  ]
+}

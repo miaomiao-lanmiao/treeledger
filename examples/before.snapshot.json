@@ -1,0 +1,35 @@
+{
+  "format": "treeledger.snapshot",
+  "version": 1,
+  "algorithm": "sha256",
+  "excludes": [
+    ".git/",
+    ".pytest_cache/",
+    ".venv/",
+    "__pycache__/",
+    "node_modules/",
+    "venv/"
+  ],
+  "files": [
+    {
+      "path": "config.json",
+      "size": 20,
+      "sha256": "90c8ac6ba993edae80064535af61f0ffb797fc5cc1cfab388d21d6d40d344164"
+    },
+    {
+      "path": "docs/intro.txt",
+      "size": 35,
+      "sha256": "458881e6b896374ec4b1ed4d50dfcda8df0acf5842f9493e16fe9086054d3452"
+    },
+    {
+      "path": "hello.txt",
+      "size": 26,
+      "sha256": "ad1bef0a23360dd286c7443bd1c1c5bd8a24913ec6384b2e938f84f968b7a5ff"
+    },
+    {
+      "path": "old-note.txt",
+      "size": 26,
+      "sha256": "81503f930e0d9ce94769ded42a7d5e49ddbc11b744ac77b2f1ad55cb6aba26b0"
+    }
+  ]
+}
