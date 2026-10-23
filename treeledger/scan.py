@@ -59,8 +59,12 @@ def collect_excludes(root: Path, extra: list[str], output: Path | None) -> tuple
     return tuple(sorted(set(validate_pattern(p) for p in patterns)))
 
 
+def _identity(info: os.stat_result) -> tuple:
+    return (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns)
+
+
 def _signature(info: os.stat_result) -> tuple:
-    return (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
+    return (*_identity(info), info.st_ctime_ns)
 
 
 def hash_file(path: Path, relative: str) -> FileEntry:
@@ -71,7 +75,9 @@ def hash_file(path: Path, relative: str) -> FileEntry:
     descriptor = os.open(path, flags)
     with os.fdopen(descriptor, "rb") as stream:
         opened = os.fstat(stream.fileno())
-        if not stat.S_ISREG(opened.st_mode) or _signature(before) != _signature(opened):
+        # Windows stat/fstat can give ctime different meanings. Compare ctime
+        # only within the same API: https://github.com/python/cpython/issues/157671
+        if not stat.S_ISREG(opened.st_mode) or _identity(before) != _identity(opened):
             raise LedgerError(f"File changed before hashing: {relative!r}; retry with a quiet folder.")
         digest = hashlib.sha256()
         size = 0
@@ -80,7 +86,7 @@ def hash_file(path: Path, relative: str) -> FileEntry:
             size += len(chunk)
         after = os.fstat(stream.fileno())
     current = path.lstat()
-    if size != before.st_size or _signature(before) != _signature(after) or _signature(before) != _signature(current):
+    if size != opened.st_size or _signature(opened) != _signature(after) or _signature(before) != _signature(current):
         raise LedgerError(f"File changed while hashing: {relative!r}; retry with a quiet folder.")
     return FileEntry(relative, size, digest.hexdigest())
 

@@ -10,6 +10,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from treeledger.cli import main, write_output
@@ -71,6 +72,18 @@ class SnapshotTests(TemporaryFolder):
         file = self.put("binary", data)
         with patch("treeledger.scan.CHUNK_SIZE", 127):
             self.assertEqual(hash_file(file, "binary"), entry("binary", data))
+
+    def test_stat_and_fstat_can_use_different_ctime_semantics(self):
+        file = self.put("stable", b"unchanged")
+        actual_fstat = os.fstat
+
+        def different_ctime(descriptor):
+            info = actual_fstat(descriptor)
+            fields = {key: getattr(info, key) for key in ("st_mode", "st_dev", "st_ino", "st_size", "st_mtime_ns")}
+            return SimpleNamespace(**fields, st_ctime_ns=info.st_ctime_ns + 1_000_000)
+
+        with patch("treeledger.scan.os.fstat", side_effect=different_ctime):
+            self.assertEqual(hash_file(file, "stable"), entry("stable", b"unchanged"))
 
     def test_default_exclusions_and_nested_directories(self):
         self.put("src/main.py")

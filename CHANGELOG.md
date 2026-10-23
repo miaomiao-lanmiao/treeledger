@@ -9,4 +9,5 @@
 - Default exclusions, `.treeledgerignore` and repeated `--exclude` flags.
 - Streaming reads, detected in-flight change failures and atomic output replacement.
 - Link, Windows junction/reparse point and special-file skipping.
+- Consistent per-API timestamp comparisons for Windows stat/fstat compatibility.
 - English/Chinese documentation, reproducible example data and cross-platform CI.
