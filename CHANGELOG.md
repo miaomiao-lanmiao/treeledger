@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 — 2026-11-17
+
+- Prevent `snapshot` and `check` output from creating or replacing the scanned root's `.treeledgerignore`, including case variants and Windows trailing-dot or trailing-space aliases.
+
 ## 0.1.0 — 2026-10-23
 
 - Deterministic SHA-256 snapshots with relative paths and strict input validation.

@@ -40,7 +40,7 @@ treeledger --version
 也可以从 [Releases](https://github.com/miaomiao-lanmiao/treeledger/releases) 下载 wheel，随后离线安装：
 
 ```sh
-python -m pip install --no-index treeledger-0.1.0-py3-none-any.whl
+python -m pip install --no-index treeledger-0.1.1-py3-none-any.whl
 ```
 
 源码无需安装即可通过 `python -m treeledger` 运行；构建和源码安装需要 setuptools，下载构建工具时可能访问网络。
@@ -97,6 +97,7 @@ treeledger snapshot ./project --exclude '*.zip' --exclude 'cache/' -o baseline.j
 - 支持 `*`、`?`、`[abc]`；使用 Python `fnmatch` 语义，`*` 可以跨越 `/`，`**` 没有特殊含义。
 - 不支持 `!` 反向包含，遇到它会报错。空白边缘和注释行在忽略文件中会被去掉。
 - `.treeledgerignore` 本身作为普通文件进入快照。`check` 使用快照保存的规则，不重新加载当前忽略文件。
+- `snapshot` 和 `check` 拒绝将输出写到扫描根目录下的 `.treeledgerignore`，也拒绝该名称的大小写变体，防止报告创建或覆盖规则文件。
 
 如果快照输出文件位于扫描目录内，该文件会自动排除；保存的规则包含这条排除项。其他快照与报告不会自动排除，建议统一保存在目录之外。两份快照排除规则不同会明确提示，并返回 `1`。
 
