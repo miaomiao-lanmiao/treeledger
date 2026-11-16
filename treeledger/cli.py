@@ -12,7 +12,7 @@ from . import __version__
 from .compare import compare
 from .models import LedgerError, load_snapshot
 from .render import render
-from .scan import collect_excludes, scan
+from .scan import IGNORE_FILE_NAME, collect_excludes, scan
 
 
 def write_output(content: str, destination: Path | None) -> None:
@@ -65,6 +65,24 @@ def _protect_inputs(output: Path | None, inputs: list[Path]) -> None:
         raise LedgerError("Report output must not overwrite an input snapshot.")
 
 
+def _protect_ignore_file(root: Path, output: Path | None) -> None:
+    if output is None:
+        return
+    # os.replace acts on the destination entry, not on a leaf symlink's target.
+    name = output.name.rstrip(" .") if os.name == "nt" else output.name
+    if name.casefold() != IGNORE_FILE_NAME:
+        return
+    parent = output.parent.resolve()
+    root = root.resolve()
+    if parent != root:
+        try:
+            if not parent.samefile(root):
+                return
+        except (FileNotFoundError, NotADirectoryError):
+            return
+    raise LedgerError(f"Output must not be the root {IGNORE_FILE_NAME}.")
+
+
 def main(argv: list[str] | None = None) -> int:
     args = make_parser().parse_args(argv)
     try:
@@ -72,6 +90,7 @@ def main(argv: list[str] | None = None) -> int:
             root = args.folder.resolve()
             if not root.is_dir():
                 raise LedgerError(f"Folder does not exist or is not a directory: {str(root)!r}")
+            _protect_ignore_file(root, args.output)
             excludes = collect_excludes(root, args.exclude, args.output)
             snapshot, skipped = scan(root, excludes)
             write_output(snapshot.to_json(), args.output)
@@ -83,6 +102,7 @@ def main(argv: list[str] | None = None) -> int:
             _protect_inputs(args.output, [args.before, args.after])
             before, after = load_snapshot(args.before), load_snapshot(args.after)
         else:
+            _protect_ignore_file(args.folder, args.output)
             _protect_inputs(args.output, [args.baseline])
             before = load_snapshot(args.baseline)
             after, skipped = scan(args.folder, before.excludes)

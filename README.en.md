@@ -21,7 +21,7 @@ treeledger --version
 For offline installation, download the wheel from [Releases](https://github.com/miaomiao-lanmiao/treeledger/releases), then run:
 
 ```sh
-python -m pip install --no-index treeledger-0.1.0-py3-none-any.whl
+python -m pip install --no-index treeledger-0.1.1-py3-none-any.whl
 ```
 
 From the source checkout, `python -m treeledger` works without installation. Source installation and wheel builds require setuptools; fetching build tools may require network access.
@@ -67,6 +67,8 @@ private/*.key
 - The ignore file itself is included as an ordinary file unless excluded.
 
 `check` reuses the baseline's saved rules, without reloading the current ignore file. If `diff` compares snapshots with different rules, it reports the coverage difference and exits 1, even when their file lists are identical.
+
+`snapshot` and `check` reject output named `.treeledgerignore` at the scanned root, including case variants, so reports cannot create or replace the rules file.
 
 ## Guarantees and limits
 

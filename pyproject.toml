@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "treeledger"
-version = "0.1.0"
+version = "0.1.1"
 description = "Deterministic folder snapshots and readable content diffs, entirely offline."
 readme = "README.en.md"
 requires-python = ">=3.10"

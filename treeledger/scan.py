@@ -11,6 +11,7 @@ from pathlib import Path
 from .models import FileEntry, LedgerError, Snapshot, validate_path, validate_pattern
 
 DEFAULT_EXCLUDES = (".git/", ".venv/", "venv/", "node_modules/", "__pycache__/", ".pytest_cache/")
+IGNORE_FILE_NAME = ".treeledgerignore"
 CHUNK_SIZE = 1024 * 1024
 
 
@@ -36,7 +37,7 @@ def literal_exclude(path: str) -> str:
 
 def collect_excludes(root: Path, extra: list[str], output: Path | None) -> tuple[str, ...]:
     patterns = list(DEFAULT_EXCLUDES)
-    ignore_file = root / ".treeledgerignore"
+    ignore_file = root / IGNORE_FILE_NAME
     if ignore_file.is_symlink():
         raise LedgerError(".treeledgerignore must be a regular file, not a symbolic link.")
     if ignore_file.exists():
